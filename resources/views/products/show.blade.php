@@ -15,7 +15,16 @@
         <p><strong>Description:</strong> {{ $product->description }}</p>
         <p><strong>Price:</strong> ${{ number_format($product->price, 2) }}</p>
         <p><strong>Stock:</strong> {{ $product->stock }}</p>
-
+        {{--tapilkan barcode --}}
+        <div class="mt-3">
+        <h5>Barcode</h5>
+         @if($product->barcode)
+            {!! $barcodeHtml !!}
+        <p>{{ $product->barcode }}</p>
+        @else
+        <p><em>No barcode assigned</em></p>
+        @endif
+        </div>
         <div class="mt-4">
             <a href="{{ route('products.index') }}" class="btn btn-primary">Back to Products</a>
             @can('update', $product)

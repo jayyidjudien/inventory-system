@@ -18,6 +18,7 @@ class Product extends Model
         'price',
         'categori', // Tambahkan ini jika ingin diisi
         'nilai_stock',
+        'barcode',
     ];
     
     

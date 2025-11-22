@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class ProductController extends Controller
 {
@@ -22,14 +24,21 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         
+       $data = $request->validated();
 
-        $product = Product::create($request->validated());
+         // Generate barcode otomatis
+        $data['barcode'] = 'PRD-' . strtoupper(Str::random(8));
+
+        Product::create($data);
+
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        $generator = new BarcodeGeneratorHTML();
+        $barcodeHtml = $generator->getBarcode($product->barcode, $generator::TYPE_CODE_128);
+        return view('products.show', compact('product', 'barcodeHtml'));
     }
 
     public function edit(Product $product)
